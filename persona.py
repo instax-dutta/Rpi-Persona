@@ -10,6 +10,16 @@ import psutil
 # Design Intent: Passive monitoring with deterministic logic and optional AI wording.
 
 class PersonaSimulator:
+    # Configuration: Adjust these thresholds based on your hardware capabilities.
+    # Default values are optimized for Raspberry Pi 3 (1GB RAM).
+    THRESHOLDS = {
+        "irritated": {"disk": 90, "memory": 90},
+        "stressed": {"memory": 80, "cpu": 85},
+        "alert": {"cpu": 70, "memory": 65},
+        "pleased": {"cpu": 20, "memory": 50, "disk": 70}
+        # "calm" is the fallback state
+    }
+
     def __init__(self):
         self.mood = "calm"
         self.energy = 50  # Initial neutral energy
@@ -32,13 +42,15 @@ class PersonaSimulator:
 
     def _update_state(self, stats):
         # Mood determination (Top-down priority)
-        if stats["disk"] >= 90 or stats["memory"] >= 90:
+        t = self.THRESHOLDS
+        
+        if stats["disk"] >= t["irritated"]["disk"] or stats["memory"] >= t["irritated"]["memory"]:
             new_mood = "irritated"
-        elif stats["memory"] >= 80 or stats["cpu"] >= 85:
+        elif stats["memory"] >= t["stressed"]["memory"] or stats["cpu"] >= t["stressed"]["cpu"]:
             new_mood = "stressed"
-        elif stats["cpu"] >= 70 or stats["memory"] >= 65:
+        elif stats["cpu"] >= t["alert"]["cpu"] or stats["memory"] >= t["alert"]["memory"]:
             new_mood = "alert"
-        elif stats["cpu"] <= 20 and stats["memory"] <= 50 and stats["disk"] <= 70:
+        elif stats["cpu"] <= t["pleased"]["cpu"] and stats["memory"] <= t["pleased"]["memory"] and stats["disk"] <= t["pleased"]["disk"]:
             new_mood = "pleased"
         else:
             new_mood = "calm"
