@@ -1,18 +1,33 @@
 <div align="center">
-  <img src="https://media.discordapp.net/attachments/1089947938917871636/1199321796120232016/banner.png" alt="Rpi Persona Banner" width="100%" /> 
+  <img src="banner.png" alt="Rpi Persona Banner" width="100%" /> 
   
   # RPi Persona Daemon
   
   <a href="https://github.com/instax-dutta/Rpi-Persona">
     <img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="Github Repo" />
   </a>
+  <a href="https://rpi.sdad.pro">
+    <img src="https://img.shields.io/badge/Live-Demo-2ecc71?logo=raspberrypi&logoColor=white" alt="Live Demo" />
+  </a>
   <img src="https://img.shields.io/badge/Python-3.x-blue?logo=python" alt="Python Version" />
   <img src="https://img.shields.io/badge/Lightweight-Yes-green" alt="Lightweight" />
-  <img src="https://img.shields.io/badge/Platform-Any-orange" alt="Platform Agnostic" />
 
   **Infrastructure with a Personality.**  
   *A minimalist, aesthetic daemon that gives your server a voice based on its health.*
 </div>
+
+---
+
+## 🟢 Live Demo
+
+See the daemon running live on our hardware:
+[**https://rpi.sdad.pro**](https://rpi.sdad.pro)
+
+**Hosting Hardware Specs:**
+- **Device**: Raspberry Pi 3 Model B (v1.2)
+- **CPU**: Quad Core 1.2GHz Broadcom BCM2837 64bit
+- **RAM**: 1GB LPDDR2 (900MHz)
+- **Status**: Running `persona.py` with < **2% CPU** and **~15MB RAM** usage.
 
 ---
 
