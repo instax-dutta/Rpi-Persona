@@ -1,51 +1,40 @@
-# PLAN: RPi Persona Simulator - Open Source Prep
+# PLAN: RPi Persona Evolution (Lightweight)
 
-## 1. Project Overview
-A minimalist, rule-based infrastructure daemon with a personality, designed for Raspberry Pi 3. It monitors system resources and reflects a "persona" state (mood and energy) based on deterministic rules.
+## Objective
+Implement three major enhancements (Environmental Awareness, Kinetic UI, and Temporal Memory) to the RPi Persona daemon while maintaining its minimalist footprint on Raspberry Pi 3.
 
-## 2. Architecture
-- **Language**: Python 3.
-- **Dependencies**: `psutil` (required), `Flask` (optional for web mode), `requests`/`urllib` (for Ollama).
-- **Structure**: Single file `persona.py`.
-- **Runtime**: Single process, synchronous.
+## Phase 1: Planning & Infrastructure
+- [ ] Define data structures for historical stat tracking (Temporal Memory).
+- [ ] Identify low-level methods for temperature and process monitoring (Environmental Awareness).
+- [ ] Design the SSE endpoint and frontend listener logic (Reactive Bridge).
 
-## 3. Components
-### A. System Monitor
-- Sample CPU, Memory, Disk, and Uptime.
+## Phase 2: Backend Implementation (PersonaSimulator updates)
+- [ ] **Environmental Awareness**:
+    - Add `_get_cpu_temp()` reading from `/sys/class/thermal/thermal_zone0/temp`.
+    - Add `_get_latency()` using a non-blocking ping or socket connect.
+    - Add `_get_top_process()` using `psutil.process_iter()`.
+- [ ] **Temporal Memory**:
+    - Add a `collections.deque` buffer for the last 60 seconds of data.
+    - Update `_update_state()` to analyze variance/trends in the buffer.
+- [ ] **Reactive Bridge (SSE)**:
+    - Add a `/events` route to the Flask app that yields JSON data.
+    - Remove the meta-refresh logic from the HTML template.
 
-### B. Persona Engine
-- **State**: `mood` and `energy`.
-- **Logic**: Deterministic rule chain with energy mutations.
+## Phase 3: Frontend Implementation (Kinetic UI)
+- [ ] **Glassmorphism Refresh**:
+    - Update CSS with backdrop-blur and dynamic gradients based on mood.
+- [ ] **GSAP Animations**:
+    - Include GSAP via CDN (minimal impact).
+    - Animate status changes, energy bars, and the "heartbeat" effect.
+- [ ] **Live Data Listener**:
+    - Add a `new EventSource('/events')` listener in the browser to update stats without reload.
 
-### C. Communication Layer
-- **Static Messages**: Base sentences.
-- **AI Rephrasing**: Optional Ollama Cloud integration (`cogito-2.1:671b-cloud`).
+## Phase 4: Verification & Deployment
+- [ ] Local testing of all sensors.
+- [ ] Verification of SSE stability.
+- [ ] Deploy to `villa@villa.local` and restart the service.
 
-### D. Web UI
-- **Dashboard**: A minimalist, high-end HTML/CSS interface.
-- **Styling**: Vanilla CSS, Dark Mode, Glassmorphism.
-
-## 4. Open Source Cleanup (Current Phase)
-### A. Security Scrub
-- **Action**: REMOVE hardcoded API key from `persona.py`.
-- **Action**: Verify no other secrets exist in history (if using git, but here we just ensure the file is clean).
-
-### B. Configuration
-- **Environment**: Shift to `.env` file support or strictly environment variables.
-- **Example**: Create `.env.example`.
-
-### C. Documentation
-- **README.md**: Add installation, usage (CLI/Web), and configuration guide.
-- **requirements.txt**: explicit dependency list.
-- **LICENSE**: Add MIT License.
-- **.gitignore**: Ignore `__pycache__`, `.env`, etc.
-
-## 5. Implementation Steps
-1. **Sanitize**: Edit `persona.py` to revert to `os.getenv`.
-2. **Docs**: Create `README.md`, `LICENSE`, `requirements.txt`.
-3. **Config**: Create `.env.example`.
-4. **.gitignore**: Create `.gitignore`.
-
-## 6. Verification
-- **Security Scan**: Run `security_scan.py` to confirm no secrets.
-- **Functionality**: Verify invalid config handles gracefully.
+## Tech Stack
+- **Backend**: Python 3, Flask, psutil.
+- **Frontend**: Vanilla HTML5, Modern CSS (Glassmorphism), GSAP.
+- **Protocols**: Server-Sent Events (SSE).

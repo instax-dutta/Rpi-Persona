@@ -27,21 +27,23 @@ See the daemon running live on our hardware:
 - **Device**: Raspberry Pi 3 Model B (v1.2)
 - **CPU**: Quad Core 1.2GHz Broadcom BCM2837 64bit
 - **RAM**: 1GB LPDDR2 (900MHz)
-- **Status**: Running `persona.py` with < **2% CPU** and **~15MB RAM** usage.
+- **Status**: Running `persona.py` with **< 2% CPU** and **~15MB RAM** usage.
 
 ---
 
 ## 🚀 Overview
 
-**RPi Persona** is a rule-based monitoring daemon that monitors system resources (CPU, RAM, Disk) and expresses a "Mood" and "Energy" state. 
+**RPi Persona** is a rule-based monitoring daemon that monitors system resources and expresses a "Mood" and "Energy" state. 
 
-While originally **optimized for the Raspberry Pi 3 (1GB RAM)** to run under <100MB memory, the code is platform-agnostic. It runs beautifully on high-end servers, VPS instances, or local Windows/Mac development machines.
+While originally **optimized for the Raspberry Pi 3 (1GB RAM)**, it scales beautifully across VPS instances and local development machines, providing a premium, "living" dashboard for your infrastructure.
 
 ### ✨ Features
-- **Ultra-Lightweight**: Single-file Python script. No heavy dependencies.
-- **Deterministic Persona**: Moods (Calm, Alert, Stressed, Irritated, Pleased) are derived directly from system load rules.
-- **Premium Dashboard**: Embedded HTML5/CSS Glassmorphism dashboard (Zero external requests).
-- **AI-Ready**: Optional integration with **Ollama Cloud** to rephrase the dry technical status into sardonic, personality-driven commentary.
+- **Ultra-Lightweight**: Single-file Python script. Extremely low resource footprint.
+- **Hardware Awareness**: Tracks **CPU Temperature**, **Network Latency**, and **Dominant Processes**.
+- **Temporal Memory**: 60-second rolling buffer for **Trend Analysis** and **Volatility Tracking**.
+- **Kinetic UI**: Reactive **SSE (Server-Sent Events)** dashboard with **GSAP Animations** (No refresh required).
+- **Premium Design**: Full Glassmorphism UI with dynamic "Heartbeat" orbs that react to the system's mood.
+- **AI-Ready**: Optional integration with **Ollama Cloud** to rephrase dry stats into personality-driven commentary.
 
 ---
 
@@ -66,7 +68,7 @@ This daemon is designed to be "drop-in" ready.
 ## 🛠️ Usage
 
 ### 1. CLI Mode (Headless)
-Ideal for SSH sessions or logs.
+Ideal for SSH sessions or remote health checks.
 
 ```bash
 python3 persona.py
@@ -76,18 +78,16 @@ python3 persona.py
 ------------------------------
 MOOD:   CALM
 ENERGY: 53%
+UPTIME: 1d 8h 3m 50s
 ------------------------------
-CPU:    1.2%
-MEM:    14.5%
-DISK:   8.5%
-UPTIME: 3128s
+CPU:    1.2% | MEM: 14.5% | DISK: 8.5%
 ------------------------------
 >> System operating within tolerances.
 ------------------------------
 ```
 
 ### 2. Web Dashboard (Command Center)
-Starts a sleek, dark-mode dashboard at `http://localhost:51987`.
+Starts a sleek, real-time dashboard at `http://localhost:51987`.
 
 ```bash
 python3 persona.py --web
@@ -97,42 +97,38 @@ python3 persona.py --web
 
 ## 🤖 AI Integration (Ollama)
 
-By default, the daemon uses hardcoded "Base Messages". You can give it a brain by connecting it to an LLM via **Ollama Cloud** (or local Ollama).
+By default, the daemon uses hardcoded "Base Messages". You can give it a brain by connecting it to an LLM via **Ollama Cloud**.
 
 1. **Get an API Key** from your Ollama provider.
 2. **Set the Environment Variable**:
    ```bash
    export OLLAMA_API_KEY="your_key_here"
    ```
-3. **Run**: The daemon will now detect the key and rephrase its status messages dynamically while maintaining its "Dry, Technical, Restrained" tone.
-
-> **For Developers:** The prompt logic is located in the `_ai_rephrase` method. Feel free to tweak the prompt to change the persona (e.g., make it "Pirate Mode" or "Cyberpunk").
+3. **Run**: The daemon will automatically detect the key and rephrase its status messages dynamically while maintaining its "Dry, Technical, Restrained" tone.
 
 ---
 
 ## ⚙️ Customization (Fine-Tuning)
 
-We know 80% RAM usage on a Raspberry Pi is different from 80% on a 64GB Workstation. 
-
-You can fine-tune the strictness of the persona by editing the `THRESHOLDS` dictionary at the top of `persona.py`:
+You can fine-tune the thresholds for moods (including thermal limits) by editing the `THRESHOLDS` dictionary:
 
 ```python
-class PersonaSimulator:
-    # Adjust these based on your machine's muscle
-    THRESHOLDS = {
-        "irritated": {"disk": 90, "memory": 90},
-        "stressed": {"memory": 80, "cpu": 85}, # Raise this for powerful PCs
-        ...
-    }
+THRESHOLDS = {
+    "irritated": {"disk": 90, "memory": 90, "temp": 80},
+    "stressed":  {"memory": 80, "cpu": 85, "temp": 70},
+    "alert":     {"cpu": 70, "memory": 65, "temp": 60},
+    ...
+}
 ```
 
 ---
 
 ## 🧩 Architecture
 
-- **Single File**: `persona.py` contains the Logic, API Client, and HTML Template.
-- **No Vectors/Embeddings**: Logic is pure Python `if/else` for reliability.
-- **Synchronous**: Uses `psutil` blocking calls for accurate instant sampling without thread overhead.
+- **Reactive Core**: Uses **SSE** for high-frequency updates without the overhead of WebSockets.
+- **Hardware Sensors**: Direct reads from `/sys/class/thermal` for near-zero CPU temperature overhead.
+- **Trend Memory**: Implemented via `collections.deque` for memory-efficient history tracking.
+- **Async-Lite**: Non-blocking resource sampling ensures the UI remains responsive on single-core setups.
 
 ## 📄 License
 
