@@ -32,6 +32,24 @@ class PersonaSimulator:
             "pleased": "System health is acceptable. This is preferable."
         }
 
+    @staticmethod
+    def format_uptime(seconds):
+        days, remainder = divmod(seconds, 86400)
+        hours, remainder = divmod(remainder, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        
+        parts = []
+        if days > 0:
+            parts.append(f"{days}d")
+        if hours > 0:
+            parts.append(f"{hours}h")
+        if minutes > 0:
+            parts.append(f"{minutes}m")
+        if seconds > 0 or not parts:
+            parts.append(f"{seconds}s")
+        
+        return " ".join(parts)
+
     def _get_system_stats(self):
         # Sample resources (CPU call is blocking for 1s to get accurate reading)
         cpu = psutil.cpu_percent(interval=1.0)
@@ -187,7 +205,7 @@ DASHBOARD_HTML = """
                     <h1 class="mood-val">{mood_title}</h1>
                 </div>
                 <div style="text-align: right">
-                    <span style="font-size: 0.7rem; color: var(--text-dim)">Uptime: {uptime}s</span>
+                    <span style="font-size: 0.7rem; color: var(--text-dim)">Uptime: {uptime}</span>
                 </div>
             </div>
 
@@ -218,7 +236,7 @@ def run_cli():
     persona = PersonaSimulator()
     status = persona.get_status()
     message = persona.speak()
-    print("-" * 30 + f"\\nMOOD:   {status['mood'].upper()}\\nENERGY: {status['energy']}%\\n" + "-" * 30)
+    print("-" * 30 + f"\\nMOOD:   {status['mood'].upper()}\\nENERGY: {status['energy']}%\\nUPTIME: {persona.format_uptime(status['uptime'])}\\n" + "-" * 30)
     print(f"CPU: {status['cpu']}% | MEM: {status['memory']}% | DISK: {status['disk']}%\\n" + "-" * 30)
     print(f">> {message}\\n" + "-" * 30)
 
@@ -249,7 +267,7 @@ def run_web():
             cpu=status["cpu"],
             memory=status["memory"],
             disk=status["disk"],
-            uptime=status["uptime"]
+            uptime=persona.format_uptime(status["uptime"])
         )
 
     @app.route("/status")
