@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="banner.png" alt="Rpi Persona Banner" width="100%" /> 
+  <img src="banner.png?v=2" alt="Rpi Persona Banner" width="100%" /> 
   
   # RPi Persona Daemon
   
