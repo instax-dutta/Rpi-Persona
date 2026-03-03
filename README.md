@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="banner.png?v=2" alt="Rpi Persona Banner" width="100%" /> 
+  <img src="banner.png?v=3" alt="Rpi Persona Banner" width="100%" />
   
-  # RPi Persona Daemon
+# RPi Persona Daemon
   
   <a href="https://github.com/instax-dutta/Rpi-Persona">
     <img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="Github Repo" />
@@ -24,6 +24,7 @@ See the daemon running live on our hardware:
 [**https://rpi.sdad.pro**](https://rpi.sdad.pro)
 
 **Hosting Hardware Specs:**
+
 - **Device**: Raspberry Pi 3 Model B (v1.2)
 - **CPU**: Quad Core 1.2GHz Broadcom BCM2837 64bit
 - **RAM**: 1GB LPDDR2 (900MHz)
@@ -33,11 +34,12 @@ See the daemon running live on our hardware:
 
 ## 🚀 Overview
 
-**RPi Persona** is a rule-based monitoring daemon that monitors system resources and expresses a "Mood" and "Energy" state. 
+**RPi Persona** is a rule-based monitoring daemon that monitors system resources and expresses a "Mood" and "Energy" state.
 
 While originally **optimized for the Raspberry Pi 3 (1GB RAM)**, it scales beautifully across VPS instances and local development machines, providing a premium, "living" dashboard for your infrastructure.
 
 ### ✨ Features
+
 - **Ultra-Lightweight**: Single-file Python script (~670 lines). Extremely low resource footprint.
 - **Zero External JS**: No animation libraries - pure CSS-only animations.
 - **Hardware Awareness**: Tracks **CPU Temperature**, **Network Latency**, and **Dominant Processes**.
@@ -54,15 +56,18 @@ While originally **optimized for the Raspberry Pi 3 (1GB RAM)**, it scales beaut
 This daemon is designed to be "drop-in" ready.
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/instax-dutta/Rpi-Persona.git
    cd Rpi-Persona
    ```
 
 2. **Install minimal dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
+
    *(Only `psutil` and `flask` are required)*
 
 ---
@@ -70,12 +75,15 @@ This daemon is designed to be "drop-in" ready.
 ## 🛠️ Usage
 
 ### 1. CLI Mode (Headless)
+
 Ideal for SSH sessions or remote health checks.
 
 ```bash
 python3 persona.py
 ```
+
 *Output:*
+
 ```text
 ------------------------------
 MOOD:   CALM
@@ -89,6 +97,7 @@ CPU:    1.2% | MEM: 14.5% | DISK: 8.5%
 ```
 
 ### 2. Web Dashboard (Command Center)
+
 Starts a sleek, real-time dashboard at `http://localhost:51987`.
 
 ```bash
@@ -122,6 +131,7 @@ python3 persona.py --web
 ### Design Philosophy
 
 The frontend follows a **"Technical Instrument"** aesthetic:
+
 - **Typography**: JetBrains Mono (data) + Instrument Sans (labels)
 - **Visual**: Subtle noise texture, precise borders, minimal glow
 - **Motion**: GPU-accelerated CSS transitions, native pulse animation
@@ -147,9 +157,11 @@ By default, the daemon uses hardcoded "Base Messages". You can give it a brain b
 
 1. **Get an API Key** from your Ollama provider.
 2. **Set the Environment Variable**:
+
    ```bash
    export OLLAMA_API_KEY="your_key_here"
    ```
+
 3. **Run**: The daemon will automatically detect the key and rephrase its status messages dynamically while maintaining its "Dry, Technical, Restrained" tone.
 
 ---
