@@ -6,9 +6,6 @@
   <a href="https://github.com/instax-dutta/Rpi-Persona">
     <img src="https://img.shields.io/badge/GitHub-Repo-181717?logo=github" alt="Github Repo" />
   </a>
-  <a href="https://rpi.sdad.pro">
-    <img src="https://img.shields.io/badge/Live-Demo-2ecc71?logo=raspberrypi&logoColor=white" alt="Live Demo" />
-  </a>
   <img src="https://img.shields.io/badge/Python-3.x-blue?logo=python" alt="Python Version" />
   <img src="https://img.shields.io/badge/Lightweight-Yes-green" alt="Lightweight" />
 
@@ -18,12 +15,9 @@
 
 ---
 
-## 🟢 Live Demo
+## 🧪 Tested on the below machine
 
-See the daemon running live on our hardware:
-[**https://rpi.sdad.pro**](https://rpi.sdad.pro)
-
-**Hosting Hardware Specs:**
+**Hardware Specs:**
 
 - **Device**: Raspberry Pi 3 Model B (v1.2)
 - **CPU**: Quad Core 1.2GHz Broadcom BCM2837 64bit
